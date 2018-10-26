@@ -1,0 +1,18 @@
+{
+  "name": "web-tech-server",
+  "version": "1.0.1",
+  "description": "",
+  "main": "app.js",
+  "dependencies": {
+    "adv-koa-router": "git+https://github.com/alexozornin/adv-koa-router.git",
+    "alex-async-fs": "git+https://github.com/alexozornin/alex-async-fs.git",
+    "koa": "^2.6.1",
+    "web-tech-2018": "git+https://github.com/alexozornin/web-tech-2018.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alexander Ozornin",
+  "license": "ISC"
+}
