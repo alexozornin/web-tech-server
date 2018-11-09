@@ -8,17 +8,17 @@ const afs = require('alex-async-fs');
 const app = new Koa();
 const globalRouter = new KoaRouter(app);
 
-let indexRoutes = [
+let publicRoutes = [
     '/',
     '/lab1',
     '/lab2'
 ]
 
-globalRouter.addIdenticalHandlers('GET', indexRoutes, async (ctx) => {
-    ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'index.html'), {encoding: 'utf8'});
+globalRouter.addIdenticalHandlers('GET', publicRoutes, async (ctx) => {
+    ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'public', 'index.html'), {encoding: 'utf8'});
 });
 
-globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'static'), null, {}, {'.css': 'text/css'});
+globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'public', 'static'), null, {}, {'.js': 'text/javascript', '.css': 'text/css'});
 
 globalRouter.addHandler('GET', '/', (ctx) => {
     ctx.body = 'Alexander Ozornin / #404 Page not found'

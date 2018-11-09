@@ -1,12 +1,14 @@
 {
   "name": "web-tech-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "app.js",
   "dependencies": {
     "adv-koa-router": "git+https://github.com/alexozornin/adv-koa-router.git",
     "alex-async-fs": "git+https://github.com/alexozornin/alex-async-fs.git",
     "koa": "^2.6.1",
+    "mysql2": "^1.6.4",
+    "sequelize": "^4.41.1",
     "web-tech-2018": "git+https://github.com/alexozornin/web-tech-2018.git"
   },
   "devDependencies": {},
