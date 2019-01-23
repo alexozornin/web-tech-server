@@ -1,0 +1,40 @@
+{
+    "server": {
+        "port": 80
+    },
+    "security": {
+        "key32": "12345678",
+        "key16": "1234"
+    },
+    "database": {
+        "name": "wt",
+        "username": "root",
+        "password": "123",
+        "options": {
+            "host": "127.0.0.1",
+            "port": "",
+            "dialect": "mysql",
+            "pool": {
+                "max": "5",
+                "min": "0",
+                "acquire": "30000",
+                "idle": "10000"
+            },
+            "storage": "data.db",
+            "omitNull": "true",
+            "define": {
+                "underscored": "false",
+                "freezeTableName": "false",
+                "charset": "utf8",
+                "dialectOptions": {
+                    "collate": "utf8_general_ci"
+                },
+                "timestamps": false
+            },
+            "sync": {
+                "force": "false"
+            },
+            "logging": false
+        }
+    }
+}

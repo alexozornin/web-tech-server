@@ -1,33 +1,106 @@
 'use strict'
 
+const config = require('./config.json');
 const path = require('path');
+const Database = require('./lib/database/index.js');
 const Koa = require('koa');
 const KoaRouter = require('adv-koa-router');
+const Koauth = require('koauth');
+const bodyparser = require('koa-bodyparser');
 const afs = require('alex-async-fs');
 
-const app = new Koa();
-const globalRouter = new KoaRouter(app);
-
-let publicRoutes = [
+const publicRoutes = [
     '/',
     '/lab1',
     '/lab2'
-]
+];
 
-globalRouter.addIdenticalHandlers('GET', publicRoutes, async (ctx) => {
-    ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'public', 'index.html'), {encoding: 'utf8'});
-});
+(async () => {
+    const app = new Koa();
+    app.use(bodyparser({ jsonLimit: '64mb' }));
+    const globalRouter = new KoaRouter(app, []);
+    const db = new Database();
+    await db.init();
 
-globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'public', 'static'), null, {}, {'.js': 'text/javascript', '.css': 'text/css'});
+    const getUserById = async (userId) => {
+        let user = await db.models['users'].findOne({
+            where: {
+                id: userId
+            }
+        });
+        if (!user) {
+            return null;
+        }
+        return user.dataValues || user;
+    }
 
-globalRouter.addHandler('GET', '/', (ctx) => {
-    ctx.body = 'Alexander Ozornin / #404 Page not found'
-}, '$else');
+    const signInUser = async (ctx, db) => {
+        let user = await db.models['users'].findOne({
+            where: {
+                email: ctx.request.body.email
+            }
+        });
+        if (!user) {
+            return null;
+        }
+        if (user.dataValues) {
+            user = user.dataValues;
+        }
+        if (ah.check(ctx.request.body.password, user.salt, config.security.local, user.password)) {
+            return user.id;
+        }
+        return null;
+    }
+    const signOutUser = async () => {
 
-globalRouter.addHandler('POST', '/', (ctx) => {
-    ctx.body = 'Alexander Ozornin / #404 Page not found'
-}, '$else');
+    }
 
-app.listen(80, () => {
-    console.log('Server started');
-})
+    const getSessionByUserId = async (userId) => {
+        let user = await getUserById(userId);
+        if (user && user.session) {
+            return user.session;
+        }
+        return null;
+    }
+
+    const setSessionByUserId = async (userId, session) => {
+        await db.models['users'].update({ session }, {
+            where: {
+                id: userId
+            }
+        });
+    }
+
+    const koauthOptions = {
+        key32: config.security.key32,
+        key16: config.security.key16,
+        sessionStorage: 'custom',
+        sessionDirPath: path.join(__dirname, 'sessions'),
+        getSessionByUserId,
+        setSessionByUserId
+    };
+
+    const koauth = new Koauth(getUserById, signInUser, signOutUser, koauthOptions);
+    globalRouter.addParams(db, koauth);
+
+    const p403 = await afs.readFileAsync(path.join(__dirname, 'lib', 'pages', '403.html'), { encoding: 'utf8' });
+    const p404 = await afs.readFileAsync(path.join(__dirname, 'lib', 'pages', '404.html'), { encoding: 'utf8' });
+
+    globalRouter.addIdenticalHandlers('GET', publicRoutes, async (ctx) => {
+        ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'public', 'index.html'), { encoding: 'utf8' });
+    });
+
+    globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'public', 'static'), null, {}, { '.js': 'text/javascript', '.css': 'text/css' });
+
+    globalRouter.addHandler('GET', '/', (ctx) => {
+        ctx.body = p404;
+    }, '$else');
+
+    globalRouter.addHandler('POST', '/', (ctx) => {
+        ctx.body = p404;
+    }, '$else');
+
+    app.listen(config.server.port, () => {
+        console.log('Server started on', config.server.port);
+    })
+})();
