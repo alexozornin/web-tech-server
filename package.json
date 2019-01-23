@@ -1,6 +1,6 @@
 {
   "name": "web-tech-server",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "app.js",
   "dependencies": {
@@ -10,6 +10,7 @@
     "koa-bodyparser": "^4.2.1",
     "koauth": "git+https://github.com/alexozornin/koauth.git",
     "mysql2": "^1.6.4",
+    "request": "^2.88.0",
     "sequelize": "^4.41.1",
     "web-tech-2018": "git+https://github.com/alexozornin/web-tech-2018.git"
   },

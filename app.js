@@ -87,10 +87,10 @@ const publicRoutes = [
     const p404 = await afs.readFileAsync(path.join(__dirname, 'lib', 'pages', '404.html'), { encoding: 'utf8' });
 
     globalRouter.addIdenticalHandlers('GET', publicRoutes, async (ctx) => {
-        ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'public', 'index.html'), { encoding: 'utf8' });
+        ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'index.html'), { encoding: 'utf8' });
     });
 
-    globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'public', 'static'), null, {}, { '.js': 'text/javascript', '.css': 'text/css' });
+    globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'static'), null, {}, { '.js': 'text/javascript', '.css': 'text/css' });
 
     globalRouter.addHandler('GET', '/', (ctx) => {
         ctx.body = p404;
