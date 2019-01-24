@@ -1,11 +1,13 @@
 {
   "name": "web-tech-server",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "",
   "main": "app.js",
   "dependencies": {
     "adv-koa-router": "git+https://github.com/alexozornin/adv-koa-router.git",
     "alex-async-fs": "git+https://github.com/alexozornin/alex-async-fs.git",
+    "alex-hash": "git+https://github.com/alexozornin/alex-hash.git",
+    "alex-mail": "git+https://github.com/alexozornin/alex-mail.git",
     "koa": "^2.6.1",
     "koa-bodyparser": "^4.2.1",
     "koauth": "git+https://github.com/alexozornin/koauth.git",

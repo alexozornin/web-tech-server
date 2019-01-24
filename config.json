@@ -1,15 +1,36 @@
 {
     "server": {
-        "port": 80
+        "port": 80,
+        "redirectUrl": "http://localhost"
     },
     "security": {
+        "local": "12345678",
         "key32": "12345678",
         "key16": "1234"
+    },
+    "levels": {
+        "root": 0,
+        "admin": 8,
+        "user": 64,
+        "ticket": 512
+    },
+    "smtp": {
+        "from": "no-reply@alexozornin.ru",
+        "host": "smtp.yandex.ru",
+        "port": 465,
+        "secure": true,
+        "username": "no-reply@alexozornin.ru",
+        "password": "fg14ah230bc1e7d2"
+    },
+    "currencies": {
+        "RUR": 1,
+        "USD": 65,
+        "EUR": 75
     },
     "database": {
         "name": "wt",
         "username": "root",
-        "password": "fg14ah230bc1e7d2",
+        "password": "123",
         "options": {
             "host": "127.0.0.1",
             "port": "",

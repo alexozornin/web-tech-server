@@ -8,11 +8,16 @@ const KoaRouter = require('adv-koa-router');
 const Koauth = require('koauth');
 const bodyparser = require('koa-bodyparser');
 const afs = require('alex-async-fs');
+const ah = require('alex-hash');
 
 const publicRoutes = [
     '/',
     '/lab1',
-    '/lab2'
+    '/lab2',
+    '/headhunter',
+    '/profile',
+    '/signin',
+    '/signup'
 ];
 
 (async () => {
@@ -90,14 +95,18 @@ const publicRoutes = [
         ctx.body = await afs.readFileAsync(path.join(__dirname, 'web', 'index.html'), { encoding: 'utf8' });
     });
 
+    globalRouter.addStaticHandlers('POST', path.join(__dirname, 'lib', 'api'));
+
     globalRouter.addDynamicDir('GET', '/static', path.join(__dirname, 'web', 'static'), null, {}, { '.js': 'text/javascript', '.css': 'text/css' });
 
     globalRouter.addHandler('GET', '/', (ctx) => {
+        ctx.status = 404;
         ctx.body = p404;
     }, '$else');
 
     globalRouter.addHandler('POST', '/', (ctx) => {
-        ctx.body = p404;
+        ctx.status = 404;
+        ctx.body = '#404 / Web Tech Server 2019 / Page not found';
     }, '$else');
 
     app.listen(config.server.port, () => {
